@@ -1,14 +1,14 @@
-package me.pan1st.invisibleitemframe.util;
+package me.pan1st.invisibleitemframe.listener;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import me.pan1st.invisibleitemframe.InvisibleItemFrame;
-import me.pan1st.invisibleitemframe.listener.ItemFrameListener;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.framework.qual.DefaultQualifier;
+
 @DefaultQualifier(NonNull.class)
 public final class Listeners {
     private final InvisibleItemFrame plugin;

@@ -1,12 +1,5 @@
 package me.pan1st.invisibleitemframe.config;
 
-import cloud.commandframework.minecraft.extras.RichDescription;
-import com.google.common.base.Suppliers;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
-import net.kyori.adventure.text.JoinConfiguration;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.william278.annotaml.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,47 +7,84 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
-
 
 @YamlFile
 public class Setting {
 
     @YamlKey("item_frame.name")
-    public String itemframeName = "Invisible Item Frame";
+    public String itemFrameName = "Invisible Item Frame";
+
+    @YamlKey("item_frame.enchanted")
+    public boolean itemFrameEnchanted = false;
 
     @YamlKey("item_frame.lore")
-    public List<String> itemframeLore = new ArrayList<>(List.of("line1", "line2"));
+    public List<String> itemFrameLore = new ArrayList<>(List.of("line1", "line2"));
 
     @YamlKey("item_frame.recipe.enabled")
-    public boolean itemframeRecipeEnabled = true;
+    public boolean itemFrameRecipeEnabled = true;
 
     @YamlKey("item_frame.recipe.amount")
-    public int itemframeRecipeAmount = 8;
+    public int itemFrameRecipeAmount = 8;
 
     @YamlKey("item_frame.recipe.shape")
-    public List<String> itemframeRecipeShape = new ArrayList<>(List.of("FFF", "F F", "FFF"));
+    public List<String> itemFrameRecipeShape = new ArrayList<>(List.of("FFF", "F F", "FFF"));
 
     @YamlKey("item_frame.recipe.ingredients")
-    public Map<String, String> itemframeRecipeIngredients = RecipeIngredients.getDefaults();
+    public Map<String, String> itemFrameRecipeIngredients = RecipeIngredients.getDefaults();
 
     @YamlKey("glow_item_frame.name")
-    public String glowItemframeName = "Glow Invisible Item Frame";
+    public String glowItemFrameName = "Glow Invisible Item Frame";
+
+    @YamlKey("glow_item_frame.enchanted")
+    public boolean glowItemFrameEnchanted = false;
 
     @YamlKey("glow_item_frame.lore")
-    public List<String> glowItemframeLore = new ArrayList<>(List.of("line1", "line2"));
+    public List<String> glowItemFrameLore = new ArrayList<>();
 
     @YamlKey("glow_item_frame.recipe.enabled")
-    public boolean glowItemframeRecipeEnabled = true;
+    public boolean glowItemFrameRecipeEnabled = true;
 
     @YamlKey("glow_item_frame.recipe.amount")
-    public int glowItemframeRecipeAmount = 8;
+    public int glowItemFrameRecipeAmount = 8;
 
     @YamlKey("glow_item_frame.recipe.shape")
-    public List<String> glowItemframeRecipeShape = new ArrayList<>(List.of("FFF", "F F", "FFF"));
+    public List<String> glowItemFrameRecipeShape = new ArrayList<>(List.of("FFF", "FAF", "FFF"));
 
     @YamlKey("glow_item_frame.recipe.ingredients")
-    public Map<String, String> glowItemframeRecipeIngredients = RecipeIngredients.getDefaults();
+    public Map<String, String> glowItemFrameRecipeIngredients = RecipeIngredients.getDefaults();
+
+    @YamlKey("message.reload")
+    public String reload = "<grey> Configuration reloaded!";
+
+    @YamlKey("message.no-permission")
+    public String noPermission = "<red>You dont have permission to do that.";
+    @YamlKey("message.invalid-argument")
+    public String invalidArgument = "<red>Invalid command argument: <error>";
+
+    @YamlKey("message.invalid-sender")
+    public String invalidSender = "<red>Invalid command sender. You must be of type <gray><type></gray>.";
+
+    @YamlKey("message.invalid-syntax")
+    public String invalidSyntax = "<red>Invalid command syntax. Correct command syntax is: <syntax>";
+
+    @YamlKey("message.invalid-number")
+    public String invalidNumber = "<grey> Invalid Number!";
+
+    @YamlKey("message.invalid-boolean")
+    public String invalidBoolean = "<grey> Invalid Boolean ( True/ False )!";
+
+    @YamlKey("message.player-not-found")
+    public String playerNotFound = "<grey> Player Not Found!";
+
+    @YamlKey("message.inventory-is-full")
+    public String invIsFull = "<grey> Target's inventory is full!";
+
+    @YamlKey("message.receive-item-from")
+    public String receiveItemFrom = "<grey> <from> gave <to> <item> x<amount>";
+
+    @YamlKey("message.give-item-to")
+    public String giveItemTo = "<grey> You gave <to> <item> x<amount>";
+
 
     // You *must* include a zero-args constructor.
     public Setting() {

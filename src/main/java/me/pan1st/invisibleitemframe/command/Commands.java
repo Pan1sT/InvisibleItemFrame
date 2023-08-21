@@ -1,4 +1,4 @@
-package me.pan1st.invisibleitemframe.util;
+package me.pan1st.invisibleitemframe.command;
 
 import cloud.commandframework.CommandTree;
 import cloud.commandframework.annotations.AnnotationParser;
@@ -86,6 +86,8 @@ public final class Commands {
                 /* Command sender type */ CommandSender.class,
                 /* Mapper for command meta instances */ commandMetaFunction
         );
+
+        new ExceptionHandler(plugin, this.manager).register();
 
         this.annotationParser.parseContainers();
     }

@@ -3,7 +3,10 @@ package me.pan1st.invisibleitemframe.util;
 import me.pan1st.invisibleitemframe.InvisibleItemFrame;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
@@ -17,6 +20,7 @@ import org.checkerframework.framework.qual.DefaultQualifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @DefaultQualifier(NonNull.class)
@@ -32,44 +36,58 @@ public final class ItemFrames {
 
     public static boolean isInvisibleItemFrame(@NotNull ItemStack item) {
         ItemMeta meta = item.getItemMeta();
-        return meta.getPersistentDataContainer().has(new NamespacedKey(InvisibleItemFrame.getInstance(), "InvisibleItemFrame"), PersistentDataType.BYTE);
+        return meta.getPersistentDataContainer().has(Constants.INVISIBLE_KEY, PersistentDataType.BYTE);
+    }
+
+    public static boolean isInvisibleItemFrame(@NotNull Entity entity) {
+        final EntityType type = entity.getType();
+        if (type != EntityType.ITEM_FRAME && type != EntityType.GLOW_ITEM_FRAME) {
+            return false;
+        }
+        return entity.getPersistentDataContainer().has(Constants.INVISIBLE_KEY, PersistentDataType.BYTE);
     }
 
 
     private void itemFrameBuilder() {
-        itemFrame = new ItemStack(Material.GLOW_ITEM_FRAME, 1);
+        itemFrame = new ItemStack(Material.ITEM_FRAME, 1);
         ItemMeta itemFrameMeta = itemFrame.getItemMeta();
         assert itemFrameMeta != null;
-        itemFrameMeta.displayName(Common.miniMessage(plugin.setting.glowItemframeName));
-        itemFrameMeta.lore(Common.miniMessage(plugin.setting.glowItemframeLore));
-        itemFrameMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "invisible"), PersistentDataType.BYTE, (byte) 1);
+        if (plugin.setting.itemFrameEnchanted) itemFrameMeta.addEnchant(Enchantment.LURE, 1, false);
+        itemFrameMeta.displayName(Common.deserialize(plugin.setting.itemFrameName));
+        if (!plugin.setting.itemFrameLore.isEmpty())
+            itemFrameMeta.lore(Common.deserialize(plugin.setting.itemFrameLore));
+        itemFrameMeta.getPersistentDataContainer().set(Constants.INVISIBLE_KEY, PersistentDataType.BYTE, (byte) 1);
+        itemFrameMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemFrame.setItemMeta(itemFrameMeta);
 
-        glowItemFrame = new ItemStack(Material.ITEM_FRAME, 1);
+        glowItemFrame = new ItemStack(Material.GLOW_ITEM_FRAME, 1);
         ItemMeta glowItemFrameMeta = glowItemFrame.getItemMeta();
         assert glowItemFrameMeta != null;
-        glowItemFrameMeta.displayName(Common.miniMessage(plugin.setting.itemframeName));
-        glowItemFrameMeta.lore(Common.miniMessage(plugin.setting.itemframeLore));
-        glowItemFrameMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "invisible"), PersistentDataType.BYTE, (byte) 1);
+        if (plugin.setting.glowItemFrameEnchanted) glowItemFrameMeta.addEnchant(Enchantment.LURE, 1, false);
+        glowItemFrameMeta.displayName(Common.deserialize(plugin.setting.glowItemFrameName));
+        if (!plugin.setting.glowItemFrameLore.isEmpty())
+            glowItemFrameMeta.lore(Common.deserialize(plugin.setting.glowItemFrameLore));
+        glowItemFrameMeta.getPersistentDataContainer().set(Constants.INVISIBLE_KEY, PersistentDataType.BYTE, (byte) 1);
+        itemFrameMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         glowItemFrame.setItemMeta(glowItemFrameMeta);
     }
 
     private void registerRecipe() {
-        if (plugin.setting.itemframeRecipeEnabled){
+        if (plugin.setting.itemFrameRecipeEnabled) {
             ItemStack item = itemFrame.clone();
-            item.setAmount(plugin.setting.itemframeRecipeAmount);
-            ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(plugin, "InvisibleItemFrame"), item);
-            List<String> shape = plugin.setting.itemframeRecipeShape;
+            item.setAmount(plugin.setting.itemFrameRecipeAmount);
+            ShapedRecipe recipe = new ShapedRecipe(Constants.INVISIBLE_ITEM_FRAME, item);
+            List<String> shape = plugin.setting.itemFrameRecipeShape;
             recipe.shape(shape.toArray(new String[0]));
-            Map<String, String> ingredients = plugin.setting.itemframeRecipeIngredients;
+            Map<String, String> ingredients = plugin.setting.itemFrameRecipeIngredients;
             ingredients.forEach((k, v) -> {
-                if (v.contains(":")) {
-                    String[] splitted = v.split(":");
+                if (v.contains(";")) {
+                    String[] splitted = v.split(";");
                     Material material = Material.matchMaterial(splitted[0]);
                     assert material != null;
                     ItemStack bottle = new ItemStack(material);
                     PotionMeta meta = (PotionMeta) bottle.getItemMeta();
-                    meta.setBasePotionData(new PotionData(PotionType.valueOf(splitted[1]), Boolean.parseBoolean(splitted[2]), Boolean.parseBoolean(splitted[3])));
+                    meta.setBasePotionData(new PotionData(PotionType.valueOf(splitted[1].toUpperCase(Locale.ENGLISH)), Boolean.parseBoolean(splitted[2]), Boolean.parseBoolean(splitted[3])));
                     bottle.setItemMeta(meta);
                     RecipeChoice.ExactChoice choice = new RecipeChoice.ExactChoice(bottle);
                     recipe.setIngredient(k.charAt(0), choice);
@@ -81,21 +99,22 @@ public final class ItemFrames {
             });
             Bukkit.addRecipe(recipe);
         }
-        if (plugin.setting.glowItemframeRecipeEnabled){
+        if (plugin.setting.glowItemFrameRecipeEnabled) {
             ItemStack item = glowItemFrame.clone();
-            item.setAmount(plugin.setting.glowItemframeRecipeAmount);
-            ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(plugin, "GlowInvisibleItemFrame"), item);
-            List<String> shape = plugin.setting.glowItemframeRecipeShape;
+            item.setAmount(plugin.setting.glowItemFrameRecipeAmount);
+            ShapedRecipe recipe = new ShapedRecipe(Constants.GLOW_INVISIBLE_ITEM_FRAME, item);
+            List<String> shape = plugin.setting.glowItemFrameRecipeShape;
             recipe.shape(shape.toArray(new String[0]));
-            Map<String, String> ingredients = plugin.setting.glowItemframeRecipeIngredients;
+            Map<String, String> ingredients = plugin.setting.glowItemFrameRecipeIngredients;
             ingredients.forEach((k, v) -> {
-                if (v.contains(":")) {
-                    String[] splitted = v.split(":");
+                Bukkit.broadcastMessage("" + k + " " + v);
+                if (v.contains(";")) {
+                    String[] splitted = v.split(";");
                     Material material = Material.matchMaterial(splitted[0]);
                     assert material != null;
                     ItemStack bottle = new ItemStack(material);
                     PotionMeta meta = (PotionMeta) bottle.getItemMeta();
-                    meta.setBasePotionData(new PotionData(PotionType.valueOf(splitted[1]), Boolean.parseBoolean(splitted[2]), Boolean.parseBoolean(splitted[3])));
+                    meta.setBasePotionData(new PotionData(PotionType.valueOf(splitted[1].toUpperCase(Locale.ENGLISH)), Boolean.parseBoolean(splitted[2]), Boolean.parseBoolean(splitted[3])));
                     bottle.setItemMeta(meta);
                     RecipeChoice.ExactChoice choice = new RecipeChoice.ExactChoice(bottle);
                     recipe.setIngredient(k.charAt(0), choice);

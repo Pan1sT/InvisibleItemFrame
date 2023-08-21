@@ -2,11 +2,10 @@ package me.pan1st.invisibleitemframe;
 
 import io.papermc.lib.PaperLib;
 import me.pan1st.invisibleitemframe.config.Setting;
-import me.pan1st.invisibleitemframe.util.Commands;
+import me.pan1st.invisibleitemframe.command.Commands;
 import me.pan1st.invisibleitemframe.util.ItemFrames;
-import me.pan1st.invisibleitemframe.util.Listeners;
+import me.pan1st.invisibleitemframe.listener.Listeners;
 import net.william278.annotaml.Annotaml;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,9 +17,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 
 public class InvisibleItemFrame extends JavaPlugin {
-
-    public Setting setting;
     public static InvisibleItemFrame instance;
+    public Setting setting;
     public Listeners listeners;
     public Commands commands;
     public ItemFrames itemFrames;
