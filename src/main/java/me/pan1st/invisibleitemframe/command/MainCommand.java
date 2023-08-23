@@ -17,8 +17,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public class MainCommand {
 
     @CommandMethod(value = "iif give <player> <glow> <amount>")
-    @CommandDescription(value = "give invisible item frame")
-    @CommandPermission(value = "iif.give")
+    @CommandDescription(value = "Giving invisible item frame to player")
+    @CommandPermission(value = "iif.command.give")
     public final void checkCommand(@NonNull CommandSender sender, @NonNull @Argument("player") Player target, @NonNull @Argument("glow") Boolean glow, @Argument("amount") int amount) {
         InvisibleItemFrame invisibleItemFrame = InvisibleItemFrame.getInstance();
 
@@ -46,8 +46,8 @@ public class MainCommand {
     }
 
     @CommandMethod(value = "iif reload")
-    @CommandDescription(value = "reload command for invisibleitemframe")
-    @CommandPermission(value = "iif.reload")
+    @CommandDescription(value = "Reloading configuration for invisibleitemframe")
+    @CommandPermission(value = "iif.command.reload")
     public final void reload(@NonNull CommandSender sender) {
         InvisibleItemFrame instance = InvisibleItemFrame.getInstance();
         instance.reload();

@@ -30,6 +30,7 @@ public class Setting {
     public List<String> itemFrameRecipeShape = new ArrayList<>(List.of("FFF", "F F", "FFF"));
 
     @YamlKey("item_frame.recipe.ingredients")
+    @YamlComment("Potion -> potion;type;extended;upgrade")
     public Map<String, String> itemFrameRecipeIngredients = RecipeIngredients.getDefaults();
 
     @YamlKey("glow_item_frame.name")
