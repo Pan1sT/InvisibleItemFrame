@@ -34,7 +34,6 @@ public class MainCommand {
         target.getInventory().addItem(itemToGive);
         target.sendMessage(Common.withPlaceholder(invisibleItemFrame.setting.receiveItemFrom,
                 Components.placeholder("from", sender.name()),
-                Components.placeholder("to", target.name()),
                 Components.placeholder("item", itemToGive.displayName()),
                 Components.placeholder("amount", itemToGive.getAmount())));
 

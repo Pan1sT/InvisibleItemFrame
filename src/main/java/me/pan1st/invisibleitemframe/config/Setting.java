@@ -81,7 +81,7 @@ public class Setting {
     public String invIsFull = "<grey> Target's inventory is full!";
 
     @YamlKey("message.receive-item-from")
-    public String receiveItemFrom = "<grey> <from> gave <to> <item> x<amount>";
+    public String receiveItemFrom = "<grey> <from> gave you <item> x<amount>";
 
     @YamlKey("message.give-item-to")
     public String giveItemTo = "<grey> You gave <to> <item> x<amount>";
