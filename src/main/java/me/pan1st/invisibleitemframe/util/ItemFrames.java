@@ -68,7 +68,7 @@ public final class ItemFrames {
         if (!plugin.setting.glowItemFrameLore.isEmpty())
             glowItemFrameMeta.lore(Common.deserialize(plugin.setting.glowItemFrameLore));
         glowItemFrameMeta.getPersistentDataContainer().set(Constants.INVISIBLE_KEY, PersistentDataType.BYTE, (byte) 1);
-        itemFrameMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        glowItemFrameMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         glowItemFrame.setItemMeta(glowItemFrameMeta);
     }
 
