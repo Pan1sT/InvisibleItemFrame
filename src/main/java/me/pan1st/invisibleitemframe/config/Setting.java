@@ -39,6 +39,9 @@ public class Setting {
     @YamlKey("glow_item_frame.enchanted")
     public boolean glowItemFrameEnchanted = false;
 
+    @YamlKey("glow_item_frame.craft-from-regular")
+    public boolean craftFromRegular = true;
+
     @YamlKey("glow_item_frame.lore")
     public List<String> glowItemFrameLore = new ArrayList<>();
 

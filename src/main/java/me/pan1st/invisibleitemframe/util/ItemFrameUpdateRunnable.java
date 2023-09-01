@@ -15,7 +15,7 @@ public class ItemFrameUpdateRunnable extends BukkitRunnable {
     @Override
     public void run() {
         final ItemStack item = itemFrame.getItem();
-        final boolean hasItem = item.getType() != Material.AIR;
-        itemFrame.setVisible(!hasItem);
+        final boolean isEmpty = item.getType() == Material.AIR;
+        itemFrame.setVisible(isEmpty);
     }
 }

@@ -6,10 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.RecipeChoice;
-import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -124,6 +121,13 @@ public final class ItemFrames {
                     recipe.setIngredient(k.charAt(0), material);
                 }
             });
+            Bukkit.addRecipe(recipe);
+        }
+        if (plugin.setting.craftFromRegular) {
+            ItemStack item = glowItemFrame.clone();
+            ShapelessRecipe recipe = new ShapelessRecipe(Constants.GLOW_INVISIBLE_ITEM_FRAME_FROM_REGULAR, item);
+            recipe.addIngredient(1, itemFrame.clone());
+            recipe.addIngredient(1, Material.GLOW_INK_SAC);
             Bukkit.addRecipe(recipe);
         }
     }

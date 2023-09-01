@@ -14,4 +14,6 @@ public final class Constants {
     public static final NamespacedKey INVISIBLE_ITEM_FRAME = new NamespacedKey(InvisibleItemFrame.getInstance(), "invisible_item_frame");
     public static final NamespacedKey GLOW_INVISIBLE_ITEM_FRAME = new NamespacedKey(InvisibleItemFrame.getInstance(), "glow_invisible_item_frame");
 
+    public static final NamespacedKey GLOW_INVISIBLE_ITEM_FRAME_FROM_REGULAR = new NamespacedKey(InvisibleItemFrame.getInstance(), "glow_invisible_item_frame_from_regular");
+
 }

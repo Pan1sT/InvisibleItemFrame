@@ -5,8 +5,10 @@ import me.pan1st.invisibleitemframe.util.Constants;
 import me.pan1st.invisibleitemframe.util.ItemFrameUpdateRunnable;
 import me.pan1st.invisibleitemframe.util.ItemFrames;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
@@ -33,24 +35,30 @@ public class ItemFrameListener implements Listener {
         event.getEntity().getPersistentDataContainer().set(Constants.INVISIBLE_KEY, PersistentDataType.BYTE, (byte) 1);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onHangingBreak(HangingBreakEvent event) {
         Hanging hangingEntity = event.getEntity();
         EntityType entityType = hangingEntity.getType();
 
-        boolean isItemFrameType = entityType == EntityType.ITEM_FRAME || entityType == EntityType.GLOW_ITEM_FRAME;
-        if (!isItemFrameType || !ItemFrames.isInvisibleItemFrame(hangingEntity)) {
-            return;
+        if (hangingEntity instanceof ItemFrame itemFrame){
+            if (!ItemFrames.isInvisibleItemFrame(itemFrame)) return;
+
+            Location location = hangingEntity.getLocation().clone();
+            ItemStack itemToDrop = (entityType == EntityType.ITEM_FRAME)
+                    ? InvisibleItemFrame.getInstance().itemFrames.itemFrame
+                    : InvisibleItemFrame.getInstance().itemFrames.glowItemFrame;
+            ItemStack innerItemToDrop = itemFrame.getItem();
+
+            if (innerItemToDrop.getType() != Material.AIR) {
+                location.getWorld().dropItemNaturally(location.getBlock().getLocation(), innerItemToDrop);
+            }
+
+            hangingEntity.remove();
+            location.getWorld().dropItemNaturally(location.getBlock().getLocation(), itemToDrop);
+
+            event.setCancelled(true);
+
         }
-
-        Location location = hangingEntity.getLocation().clone();
-        ItemStack itemToDrop = (entityType == EntityType.ITEM_FRAME)
-                ? InvisibleItemFrame.getInstance().itemFrames.itemFrame
-                : InvisibleItemFrame.getInstance().itemFrames.glowItemFrame;
-
-        hangingEntity.remove();
-        location.getWorld().dropItemNaturally(location, itemToDrop);
-        event.setCancelled(true);
     }
 
     @EventHandler
